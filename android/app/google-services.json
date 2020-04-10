@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "852586861684",
+    "firebase_url": "https://silab-f0691.firebaseio.com",
+    "project_id": "silab-f0691",
+    "storage_bucket": "silab-f0691.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852586861684:android:312dfc136e7532625e2d21",
+        "android_client_info": {
+          "package_name": "com.project.silabuad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852586861684-55u9kh7nohmebcjegmcdb4i8c0bduerm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAs5-pHGOydFHlRYL3ekVALYdas2Fn13DU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852586861684-55u9kh7nohmebcjegmcdb4i8c0bduerm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

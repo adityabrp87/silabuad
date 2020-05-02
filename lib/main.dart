@@ -3,63 +3,55 @@ import 'package:silabuad/variabelColor.dart';
 import './jadwal.dart' as jadwal;
 import './kelas.dart' as kelas;
 import './info.dart' as info;
+import './home.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'dart:async';
+import 'package:silabuad/sign_in.dart';
+import './landing.dart';
 
 void main(){
   runApp(new MaterialApp(
     title: "SILAB",
-    home: new Home(),
+    home: new LoginPage(),
   ));
 }
 
-class  Home extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+class _LoginPageState extends State<LoginPage> {
 
-  //create controller untuk tabBar
-  TabController controller;
-
-  @override
-
-  void initState(){
-    controller = new TabController(vsync: this, length: 3);
-    super.initState();
-  }
-
-  @override
-  void dispose(){
-    controller.dispose();
-    super.dispose();
-  }
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      //create appBar
-      appBar: new AppBar(
-        //warna background
-        backgroundColor: SilabColor.primary,
-        //judul
-        title: new Text("SILAB"),
-        //bottom
-        bottom: new TabBar(
-          controller: controller,
-          tabs: <Widget>[
-            new Tab(icon: new Icon(Icons.class_),text: "Kelas",),
-            new Tab(icon: new Icon(Icons.info),text: "Info",),
-            new Tab(icon: new Icon(Icons.library_books),text: "Jadwal",),
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        child: Column (
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset('assets/image/silab.png'),
+            Padding (padding: EdgeInsets.only(bottom: 30.0),),
+            InkWell(
+              onTap: (){
+                signIn().whenComplete(() {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return Landing();
+                      },
+                    ),
+                  );
+                });
+              },
+                child: Image.asset('assets/image/log.png', width: 350.0,)),
+
           ],
         ),
-      ),
-      body: new TabBarView(
-        controller: controller,
-        children: <Widget>[
-          new kelas.Kelas(),
-          new info.Info(),
-          new jadwal.Jadwal()
-        ],
-      ),
+      )
     );
   }
 }

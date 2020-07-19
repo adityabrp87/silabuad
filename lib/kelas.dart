@@ -47,6 +47,7 @@ class _KelasPageState extends State<KelasPage>{
 
   @override
   Widget build(BuildContext context) {
+    getData();
     return Scaffold (
       floatingActionButton: FloatingActionButton (
         onPressed: ()=> _dialog(context) ,

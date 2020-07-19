@@ -44,6 +44,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             CircleAvatar(
               backgroundImage: NetworkImage(
                 sign.imageUrl,
+
               ),
               radius: 23,
               backgroundColor: Colors.transparent,

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:silabuad/variabelColor.dart';
 import './jadwal.dart' as jadwal;
 import './kelas.dart' as kelas;
 import './info.dart' as info;
 import './home.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'dart:async';
 import 'package:silabuad/sign_in.dart';
 import './landing.dart';
+import 'clipper.dart';
+import 'sign_in.dart' as sign;
+import 'package:google_fonts/google_fonts.dart';
 
 void main(){
   runApp(new MaterialApp(
@@ -24,19 +22,69 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        child: Column (
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset('assets/image/silab.png'),
-            Padding (padding: EdgeInsets.only(bottom: 30.0),),
-            InkWell(
-              onTap: (){
+  Widget title (){
+    return RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+          text: 'SI',
+          style: GoogleFonts.portLligatSans(
+            fontSize: 50,
+            fontWeight: FontWeight.w700,
+            color: Color(0xff4A91F2),
+          ),
+          children: [
+            TextSpan(
+              text: 'Lab',
+              style: TextStyle(color: Color(0xff64A1F4), fontSize: 50),
+            )
+          ]
+      ),
+    );
+  }
+  Widget email (){
+    return Container(
+      height: 50,
+      margin: EdgeInsets.symmetric(vertical: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Color(0xff4A91F2),
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(5),
+                    topLeft: Radius.circular(5)),
+              ),
+              alignment: Alignment.center,
+              child: Text('G',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                      fontWeight: FontWeight.w600)),
+            ),
+          ),
+          Expanded(
+            flex: 5,
+            child: FlatButton(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xff64A1F4),
+                  borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(5),
+                      topRight: Radius.circular(5)),
+                ),
+                alignment: Alignment.center,
+                child: Text('Masuk dengan email UAD',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400)),
+              ),
+              onPressed: () {
                 signIn().whenComplete(() {
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -47,11 +95,48 @@ class _LoginPageState extends State<LoginPage> {
                   );
                 });
               },
-                child: Image.asset('assets/image/log.png', width: 350.0,)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  @override
 
-          ],
+  Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    return Scaffold (
+      body: SafeArea(
+        child: Container(
+          height: height,
+          width: width,
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                  top: -height * .15,
+                  right: -MediaQuery.of(context).size.width * .4,
+                  child: BezierContainer()),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Center(child: SizedBox(height: height * .3)),
+                      title(),
+                      Text('Silahkan masuk dengan email UAD',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600,color: Colors.blueGrey),),
+                      SizedBox(height: 50),
+                      email(),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
-      )
+      ),
     );
   }
 }

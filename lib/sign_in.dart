@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:silabuad/status_daftar.dart';
 import 'package:flutter/material.dart';
 import './home.dart';
+import 'main.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -13,6 +13,7 @@ String email;
 String imageUrl;
 String nama;
 String nim;
+String uid;
 
 
 Future<String> signIn() async {
@@ -36,6 +37,7 @@ Future<String> signIn() async {
   name = user.displayName;
   email = user.email;
   imageUrl = user.photoUrl;
+  uid = user.uid;
 
   //ambil nama depan saja
   if (name.contains(" ")) {
@@ -214,6 +216,5 @@ String validNim(String value) {
 
 void signOutGoogle() async{
   await googleSignIn.signOut();
-
   print("User Sign Out");
 }

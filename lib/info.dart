@@ -1,71 +1,88 @@
 import 'package:flutter/material.dart';
-import 'package:silabuad/variabelColor.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'variabelColor.dart';
 
-class Info extends StatelessWidget {
-  final Firestore firestore = Firestore.instance;
+class Info extends StatefulWidget {
+
+  @override
+  _InfoState createState() => _InfoState();
+}
+
+final makebody = Container(
+  decoration: BoxDecoration(
+    color: SilabColor.tertiary,
+  ),
+  child: StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('info').orderBy('tanggal', descending: true).snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: snapshot.data.documents.length,
+          itemBuilder: (BuildContext context, int index) {
+            DocumentSnapshot document = snapshot.data.documents[index];
+            Map<String, dynamic> info = document.data;
+            return Card(
+              elevation: 8.0,
+              margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+              child: Container(
+                decoration: BoxDecoration(color: Colors.white),
+                child:ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  title: Center(
+                    child: Text(
+                      info['judul'],
+                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+
+                  subtitle: Column(
+                    children: <Widget>[
+                      Padding(padding: new EdgeInsets.only(top: 30.0),),
+                      SafeArea(
+                        child: Text(info['isi'],
+                            style: TextStyle(color: Colors.black54)),
+                      ),
+                      Padding(padding: new EdgeInsets.only(top: 15.0),),
+                      Row(
+                        children: <Widget>[
+                          Icon(Icons.people, color: Colors.black54),
+                          Text(info['author'], style: TextStyle(color: Colors.black54)),
+                          SizedBox(width: 10,),
+                          Icon(Icons.date_range, color: Colors.black54),
+                          Text(info['tanggal'], style: TextStyle(color: Colors.black54)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      }
+  ),
+);
+
+
+
+
+
+class _InfoState extends State<Info> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    return Container(
+      width: width,
+        height: height,
         decoration: BoxDecoration(
           color: SilabColor.tertiary,
         ),
-        child: StreamBuilder<QuerySnapshot>(
-          stream: firestore.collection('info').orderBy('tanggal', descending: true).snapshots(),
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
-            if (!snapshot.hasData) {
-              return Text ('Loading silahkan tunggu');
-            }
-            return ListView.builder(
-                padding: EdgeInsets.all(8.0),
-                itemCount: snapshot.data.documents.length,
-                itemBuilder: (BuildContext context, int index){
-                  DocumentSnapshot document = snapshot.data.documents[index];
-                  Map<String, dynamic> info = document.data;
-                  return Card(
-                    child : Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Container(
-                          height: 30.0,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: SilabColor.primary
-                          ),
-                          child:
-                          Align(
-                            alignment: Alignment(0, 0),
-                            child: Text(info['judul'], style: TextStyle(fontSize: 17.0),),
-                          ),
-                          ),
-                        Padding(padding: new EdgeInsets.only(top: 10.0),),
-                        Container(
-                          width: double.infinity,
-                          child: Text(
-                            info['isi'],style: TextStyle(fontSize: 15.0),
-                            maxLines: 50, overflow: TextOverflow.fade,
-                          )
-                        ),
-                        Padding(padding: new EdgeInsets.only(top: 15.0),),
-                        Container(
-                            width: double.infinity,
-                            child: Row (
-                              children: <Widget>[
-                                Text(info['tanggal'], style: TextStyle(fontSize: 11.0),),
-                                Expanded(child:Container()),
-                                Text(info['author'], style: TextStyle(fontSize: 11.0),)
-                              ],
-                            )
-                        ),
-                      ],
-                    )
-                  );
-                }
-            );
-          }
-        )
-      ),
-    );
+        child: makebody);
   }
 }
